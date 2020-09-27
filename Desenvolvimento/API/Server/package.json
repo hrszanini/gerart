@@ -1,0 +1,16 @@
+{
+  "name": "api",
+  "version": "0.1.0",
+  "description": "API Web",
+  "main": "server.js",
+  "scripts": {
+    "test": "node test.js",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.16.1",
+    "pg": "^8.3.3"
+  },
+  "author": "Hamilton Zanini",
+  "license": "ISC"
+}
