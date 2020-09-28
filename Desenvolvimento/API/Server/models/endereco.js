@@ -1,10 +1,11 @@
 const Database = require('../implementations/database');
+const Cep = require('./cep');
 
-class Cep{
+class Endereco{
     from(object){
-        let new_object = new Cep();
+        let new_object = new Endereco();
 
-        new_object.get_fields().map((e) => new_object[e] = object[new_object.get_datagram()+e])
+        new_object.get_fields().map((e) =>{if (e.indexOf('_')>0)new_object[e] = object[e]; else new_object[e] = object[new_object.get_datagram()+e] });
 
         return new_object;
     }
@@ -13,14 +14,14 @@ class Cep{
         let id_field = this.get_datagram() + this.get_fields()[0];
         
         this.get_database().select(id_field, id,(results) => {
-            results = results.map((e) => { return new Cep().from(e)});
+            results = results.map((e) => { return new Endereco().from(e)});
             callback(results[0]);
         });
     }
 
     list_all(callback){
         this.get_database().list((results) => {
-            results = results.map((e) => { return new Cep().from(e)});
+            results = results.map((e) => { return new Endereco().from(e)});
             callback(results);
         });
     }
@@ -29,13 +30,7 @@ class Cep{
         let fields = object.get_fields().map((e) => { return object.get_datagram()+e});
         let values = object.get_values();
 
-        this.get_database().insert(fields, values, (results) => {
-            if(results.length == 0){
-                this.find_by_id(values[0], callback);
-            }else{
-                callback(results);
-            }
-        });
+        this.get_database().insert(fields, values, callback);
     }
 
     update(object, callback){
@@ -51,20 +46,20 @@ class Cep{
     }
 
     get_fields(){
-        return ['id', 'logradouro', 'bairro', 'cidade', 'estado'];
+        return ['id', 'nome', 'numero', 'cep_cep'];
     }
 
     get_values(){
-        return [this.id, this.logradouro, this.bairro, this.cidade, this.estado];
+        return [this.id, this.nome, this.numero];
     }
 
     get_database(){
-        return new Database('CEP_CEP');
+        return new Database('END_ENDERECO');
     }
     
     get_datagram(){
-        return 'cep_';
+        return 'end_';
     }
 }
 
-module.exports = Cep;
+module.exports = Endereco;

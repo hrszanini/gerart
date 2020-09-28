@@ -1,15 +1,15 @@
 const driver = require('./postgres');
 
 class Database{
-    construct(table){
+    constructor(table){
         this.table = table;
-        this.configuration = driver.configure({
+        this.configuration = {
             user : process.env.DB_USER,
             host : process.env.DB_HOST,
             database : process.env.DB_DATABASE,
             password : process.env.DB_PASSWORD,
             port : process.env.DB_PORT
-        });
+        };
     }
 
     select(field, value, callback){
@@ -31,4 +31,10 @@ class Database{
     delete(field, value, callback){
         driver.delete_sql(this.configuration, this.table, field, value, callback);
     }
+
+    init(){
+        driver.init_sql(this.configuration, process.env.DB_SQL_INIT);
+    }
 }
+
+module.exports = Database;

@@ -1,4 +1,7 @@
-const app = require('./routes');
+const Database = require('./implementations/database');
+new Database().init();
+
+const app = require('./controllers/routes');
 
 const PORT = 3000;
 const HOST = '0.0.0.0';
