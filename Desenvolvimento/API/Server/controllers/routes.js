@@ -5,8 +5,11 @@ app.get('/', (req, res) => {
     res.send('Hello World');
 });
 
-app.get('/ola', (req, res) => {
-    res.send('Eaeee');
+app.get('/cep', (req, res) => {
+    const ceps = require('../repositories/ceps');
+    ceps.list((items) => {
+        res.send(items);
+    });
 });
 
 module.exports = app; 
