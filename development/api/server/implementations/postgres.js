@@ -13,7 +13,7 @@ class Driver {
         if(clauses.length > 0) {
             let clausesFields = ' WHERE ';
 
-            for(var pos in clauses){
+            for(var pos in clauses) {
                 let param = startParamPosition + parseInt(pos);
                 let clause = clauses[pos];
 
@@ -66,18 +66,19 @@ class Driver {
         }
         
         let queryFields = fields.reduce((str, field) =>{
-            if (str != '') str += ','
+            if (str != '')
+                str += ','
             return `${str} ${field}`;
         });
 
         var query = {
             text: `SELECT ${queryFields} FROM  ${table} ${this.ClauseConverter(clauses)}`,
-            values: clauses.map((e) => e.value),
+            values: clauses.map((e) => e.value)
         };
         
         this.Execute(query, callback);
     }
-
+ 
     Insert(table, fieldValues, callback){
         var fields_str = '';
         var values_str = '';
@@ -96,42 +97,27 @@ class Driver {
 
         var query = {
             text: `INSERT INTO  ${table}(${fields_str}) VALUES (${values_str})`,
-            values: fieldValues.map((e) => e.value),
+            values: fieldValues.map((e) => e.value)
         };
 
         this.Execute(query, callback);
     }
 
     Update(table, fieldValues, clauses, callback){
-        let filterClauses = clauses.filter((e) => {return e.field != null});
-        let filterFieldValues = fieldValues.filter((e) => {return e.value != null && e.value != undefined});
-        
-        var paramPosition = 0;
 
-        let updateStr = fieldValues.reduce((str, e) => {
-            if(str != '') 
-                str += ', ';
-            return str + e
-        }); 
-        
-        for(var pos in filterFieldValues){
-            var fieldValue = filterFieldValues[pos];
-            param = 1 + parseInt(pos);
-
-            if(param > 1)
-                updateStr += `, `;
-    
-            updateStr += `${fieldValue.field} = $${param}`;
-        }
-
-        console.log(callback);
+        let updateStr = fieldValues.reduce((str, e, index) => {
+            if(index == 1)
+                str = `$${index}`;
+            return `${str}, $${index + 1}`;
+        });
 
         var query = {
-            text: `UPDATE ${table} SET ${updateStr} ${this.ClauseConverter(filterClauses, fieldValues.length + 1)}`,
-            values: filterFieldValues.map((e) => e.value),
+            text: `UPDATE ${table} SET ${updateStr} ${this.ClauseConverter(clauses, fieldValues.length + 1)}`,
+            values: []
         };
 
-        filterClauses.map((e) => query.values.push(e.value));
+        fieldValues.map((e) => query.values.push(e.value));
+        clauses.map((e) => query.values.push(e.value));
         
         this.Execute(query, callback);
     }

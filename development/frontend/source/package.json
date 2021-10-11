@@ -1,0 +1,16 @@
+{
+    "name": "front",
+    "version": "0.1.0",
+    "description": "Front Gerart",
+    "main": "server.js",
+    "scripts": {
+        "test": "node test.js",
+        "start": "node server.js"
+    },
+    "dependencies": {
+        "express": "^4.16.1",
+        "body-parser": "^1.19.0"
+    },
+    "author": "Hamilton Zanini",
+    "license": "ISC"
+}

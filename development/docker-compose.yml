@@ -21,12 +21,27 @@ services:
     container_name: gerart-api
     env_file:
       - ./envs/postgres.env
+      - ./.env
     ports:
-      - 3000:3000
+      - ${API_PORT}:${API_PORT}
     expose: 
-      - 3000
+      - ${API_PORT}
     depends_on:
       - db
+    networks:
+      - postgres-compose-network
+
+  web:
+    build: ./frontend
+    container_name: gerart-web
+    env_file:
+      - ./.env
+    ports:
+      - ${WEB_PORT}:${WEB_PORT}
+    expose: 
+      - ${WEB_PORT}
+    depends_on:
+      - api
     networks:
       - postgres-compose-network
 

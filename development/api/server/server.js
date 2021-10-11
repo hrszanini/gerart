@@ -4,7 +4,7 @@ databse.Initialization();
 
 const app = require('./controllers/routes');
 
-const PORT = 3000;
+const PORT = process.env.API_PORT;
 const HOST = '0.0.0.0';
 
 app.listen(PORT, HOST);

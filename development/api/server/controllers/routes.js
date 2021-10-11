@@ -14,7 +14,7 @@ const ClienteService = require('../services/cliente_service.js');
 const clienteService = new ClienteService();
 
 app.get('/', (req, res) => {
-    res.send('Hello World');
+    res.send('Bem-Vindo à API do Gerart');
 });
 
 app.get('/cep/:cep', (req, res) => {
