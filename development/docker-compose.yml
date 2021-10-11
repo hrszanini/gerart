@@ -17,7 +17,7 @@ services:
       - postgres-compose-network
   
   api:
-    build: ./API
+    build: ./api
     container_name: gerart-api
     env_file:
       - ./envs/postgres.env

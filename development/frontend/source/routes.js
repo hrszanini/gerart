@@ -5,10 +5,10 @@ var bodyParser = require('body-parser')
 var jsonParser = bodyParser.json()
 
 app.get('/', (req, res) => {
-    res.sendFile(`${__dirname}/page/index.html`);
+    res.redirect('/page/index.html');
 });
 
-app.get('/:page', (req, res) => {
+app.get('/page/:page', (req, res) => {
     res.sendFile(`${__dirname}/page/${req.params.page}`);
 });
 
