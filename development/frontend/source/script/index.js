@@ -71,7 +71,6 @@ function GetCep(cepElement) {
     ).then((response) => {
         if (response.status === 200) 
         {
-            console.log(response.status);
             console.debug(response);
             return response.text();
         } else {
@@ -79,8 +78,20 @@ function GetCep(cepElement) {
             throw new Error('Ops! Houve um erro em nosso servidor.');
         }
     }).then((cepText) => {
+        FillCepContent(cepText);
         console.debug(cepText);
     }).catch(error => {
         console.error(error);
+    });
+}
+
+function FillCepContent(text) {
+    let cepObj = JSON.parse(text);
+    let div = document.getElementById("ceptext");
+
+    div.innerHTML = Object.keys(cepObj).reduce((str, key) => {
+        if(str == 'id')
+            str = '';
+        return `${str} <label>${key}:&#9;</label> <input type=text value='${cepObj[key]}' disabled><br>`;
     });
 }
